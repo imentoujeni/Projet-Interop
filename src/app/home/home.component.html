@@ -1,0 +1,100 @@
+
+
+
+
+<button mat-raised-button (click)="isEditable = !isEditable">
+    {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
+  </button>
+  
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Medecin</ng-template>
+        <mat-form-field>
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+        </mat-form-field>
+       
+        <mat-form-field>
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+        </mat-form-field>
+ 
+        <mat-form-field>
+          <mat-label>Adresse Email</mat-label>
+          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+        </mat-form-field>
+        
+                 
+    
+
+        <mat-form-field>
+            <mat-label>Genre</mat-label>
+            <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+          </mat-form-field>
+
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Prescription</ng-template>
+        <mat-form-field>
+          <mat-label>Patient</mat-label>
+          <input matInput formControlName="secondCtrl" placeholder="test"
+                 required>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Médicament</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Instructions de dosage</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Date de début d'utilisation de médicament</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Quantité</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Description d'usage</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Date de fin d'utilisation du médicament</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="test"
+                   required>
+          </mat-form-field>
+         
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+  
