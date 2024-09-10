@@ -10,29 +10,22 @@
     <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
       <form [formGroup]="firstFormGroup">
         <ng-template matStepLabel>Medecin</ng-template>
+        
+
         <mat-form-field>
-          <mat-label>Nom</mat-label>
-          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
-        </mat-form-field>
-       
-        <mat-form-field>
-          <mat-label>Prénom</mat-label>
-          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+          <mat-label>Status</mat-label>
+          <input matInput formControlName="status" placeholder="Last name, First name" required>
         </mat-form-field>
  
         <mat-form-field>
-          <mat-label>Adresse Email</mat-label>
-          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+          <mat-label>Patient</mat-label>
+          <input matInput formControlName="subject.display" placeholder="Last name, First name" required>
         </mat-form-field>
-        
-                 
     
-
-        <mat-form-field>
-            <mat-label>Genre</mat-label>
-            <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
+          <mat-form-field>
+            <mat-label>Intention</mat-label>
+            <input matInput formControlName="intent" placeholder="test" required>
           </mat-form-field>
-
         <div>
           <button mat-button matStepperNext>Next</button>
         </div>
@@ -41,47 +34,34 @@
     <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
       <form [formGroup]="secondFormGroup">
         <ng-template matStepLabel>Prescription</ng-template>
-        <mat-form-field>
-          <mat-label>Patient</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="test"
-                 required>
-        </mat-form-field>
+       
         <mat-form-field>
             <mat-label>Médicament</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
+            <input matInput formControlName="medication.concept.coding.display" placeholder="test"
                    required>
           </mat-form-field>
+        
           <mat-form-field>
-            <mat-label>Instructions de dosage</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
-                   required>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Date de début d'utilisation de médicament</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
+            <mat-label>Date de validité de la prescription</mat-label>
+            <input matInput formControlName="validityPeriod" placeholder="test"
                    required>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Quantité</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
+            <input matInput formControlName="quantity" placeholder="test"
                    required>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Description d'usage</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
-                   required>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Date de fin d'utilisation du médicament</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
-                   required>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Status</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="test"
+            <input matInput formControlName="dosageInstruction.text" placeholder="test"
                    required>
           </mat-form-field>
          
+          <mat-form-field>
+            <mat-label>Autorisation</mat-label>
+            <input matInput formControlName="substitution.allowedBoolean" placeholder="test"
+                   required>
+          </mat-form-field>
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -93,6 +73,7 @@
       <p>You are now done.</p>
       <div>
         <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="submitMedicationRequest()">Enregistrer</button>
         <button mat-button (click)="stepper.reset()">Reset</button>
       </div>
     </mat-step>
