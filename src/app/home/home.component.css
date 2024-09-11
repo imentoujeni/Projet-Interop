@@ -1,7 +1,33 @@
 .mat-stepper-horizontal {
-    margin-top: 8px;
-  }
-  
-  .mat-mdc-form-field {
-    margin-top: 16px;
-  }
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+.form-card {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.mat-form-field {
+  width: 100%; /* Make the fields take full width */
+  margin-bottom: 20px; /* Space between form fields */
+}
+
+button {
+  margin-top: 20px; /* Add spacing above buttons */
+}
+.success-message {
+  color: green;                /* Couleur verte pour indiquer le succès */
+  font-weight: bold;            /* Texte en gras */
+  font-size: 18px;              /* Augmente la taille de la police */
+  display: flex;
+  align-items: center;
+}
+
+.success-message::before {
+  content: '✔️';                /* Ajout de l'icône de check */
+  margin-right: 8px;            /* Espacement avant le texte */
+}

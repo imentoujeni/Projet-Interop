@@ -1,81 +1,116 @@
+<mat-card class="form-card">
+  <mat-card-header>
+    <mat-card-title>Formulaire de prescription</mat-card-title>
+  </mat-card-header>
 
+  <mat-card-content>
+    <button mat-raised-button (click)="isEditable = !isEditable">
+      {{!isEditable ? 'Editer' : 'Fixe'}}
+    </button>
 
+    <mat-stepper linear #stepper>
+      <!-- Step 1: Medecin -->
+      <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Information Médecin</ng-template>
 
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" placeholder="Select status" required>
+              <mat-option value="in-progress">En cours</mat-option>
+              <mat-option value="completed">Terminé</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field>
+            <mat-label>Patient</mat-label>
+            <input matInput formControlName="subject.display" placeholder="Last name, First name" required>
+          </mat-form-field>
 
-<button mat-raised-button (click)="isEditable = !isEditable">
-    {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
-  </button>
-  
-  <mat-stepper linear #stepper>
-    <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
-      <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel>Medecin</ng-template>
-        
-
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <input matInput formControlName="status" placeholder="Last name, First name" required>
-        </mat-form-field>
- 
-        <mat-form-field>
-          <mat-label>Patient</mat-label>
-          <input matInput formControlName="subject.display" placeholder="Last name, First name" required>
-        </mat-form-field>
-    
           <mat-form-field>
             <mat-label>Intention</mat-label>
-            <input matInput formControlName="intent" placeholder="test" required>
+            <mat-select formControlName="intent" placeholder="Select intention" required>
+              <mat-option value="proposal">Proposition</mat-option>
+              <mat-option value="plan">Plan</mat-option>
+              <mat-option value="order">Ordre</mat-option>
+              <mat-option value="original-order">Ordre original</mat-option>
+              <mat-option value="reflex-order">Ordre réflexif</mat-option>
+              <mat-option value="filler-order">Ordre de remplissage</mat-option>
+              <mat-option value="instance-order">Ordre d'instance</mat-option>
+              <mat-option value="option">Option</mat-option>
+            </mat-select>
           </mat-form-field>
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-      <form [formGroup]="secondFormGroup">
-        <ng-template matStepLabel>Prescription</ng-template>
-       
-        <mat-form-field>
+          
+          <div>
+            <button mat-button matStepperNext>Suivant</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 2: Prescription -->
+      <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Information Prescription</ng-template>
+
+          <mat-form-field>
             <mat-label>Médicament</mat-label>
-            <input matInput formControlName="medication.concept.coding.display" placeholder="test"
-                   required>
+            <mat-select formControlName="medication.concept.coding.display" required>
+              <mat-option *ngFor="let med of allowedSnomedCodes" [value]="med.code">
+                {{ med.nom }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
-        
+          
+          
+          
+
           <mat-form-field>
-            <mat-label>Date de validité de la prescription</mat-label>
-            <input matInput formControlName="validityPeriod" placeholder="test"
-                   required>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Quantité</mat-label>
-            <input matInput formControlName="quantity" placeholder="test"
-                   required>
-          </mat-form-field>
+  <mat-label>Date de début de l'utilisation</mat-label>
+  <input matInput [matDatepicker]="picker" formControlName="validityPeriod" placeholder="Entrez la date de début de l'utilisation" [min]="todayDate" required>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+          
+          
+
+<mat-form-field>
+  <mat-label>Quantité</mat-label>
+  <input matInput type="number" formControlName="quantity" placeholder="Entrez la quantité" required>
+</mat-form-field>
+
           <mat-form-field>
             <mat-label>Description d'usage</mat-label>
-            <input matInput formControlName="dosageInstruction.text" placeholder="test"
-                   required>
+            <input matInput formControlName="dosageInstruction.text" placeholder="Décrivez l'usage de médicament" required>
           </mat-form-field>
-         
+
           <mat-form-field>
             <mat-label>Autorisation</mat-label>
-            <input matInput formControlName="substitution.allowedBoolean" placeholder="test"
-                   required>
+            <mat-select formControlName="substitution.allowedBoolean" required>
+              <mat-option [value]="true">Autorisé</mat-option>
+              <mat-option [value]="false">Non autorisé</mat-option>
+            </mat-select>
           </mat-form-field>
+          
+
+          <div>
+            <button mat-button matStepperPrevious>Retour</button>
+            <button mat-button matStepperNext>Suivant</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 3: Done -->
+      <mat-step>
+        <ng-template matStepLabel>Terminé</ng-template>
+        <p class="success-message">
+         Vous avez maintenant terminé.
+        </p>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-button matStepperPrevious>Retour</button>
+          <button mat-button (click)="submitMedicationRequest()">Enregistrer</button>
+          <button mat-button (click)="stepper.reset()">Réinitialiser</button>
         </div>
-      </form>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="submitMedicationRequest()">Enregistrer</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
-      </div>
-    </mat-step>
-  </mat-stepper>
-  
+      </mat-step>
+    </mat-stepper>
+  </mat-card-content>
+</mat-card>

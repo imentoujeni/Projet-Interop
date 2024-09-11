@@ -1,35 +1,56 @@
-
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-
+    CommonModule,
     MatStepperModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatCardModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
   isEditable = false;
+  todayDate: string = '';
 
-  constructor(private _formBuilder: FormBuilder, private fhirService: ApiService) { }
+  // Liste des médicaments avec leurs codes SNOMED
+  readonly allowedSnomedCodes = [
+    { code: '13525006', nom: "Acetylcholine" },
+    { code: '18381001', nom: "Pindolol" },
+    { code: '19194001', nom: "Didanosine" }
+  ];
+
+  constructor(private _formBuilder: FormBuilder, private fhirService: ApiService) {}
 
   ngOnInit(): void {
+    const today = new Date();
+    this.todayDate = today.toISOString().split('T')[0];
+
     this.firstFormGroup = this._formBuilder.group({
       status: ['', Validators.required],
       'subject.display': ['', Validators.required],
@@ -37,7 +58,7 @@ export class HomeComponent implements OnInit {
     });
 
     this.secondFormGroup = this._formBuilder.group({
-      'medication.concept.coding.display': ['', Validators.required],
+      'medication.concept.coding.display': ['', Validators.required], // Stocke le code SNOMED
       validityPeriod: ['', Validators.required],
       quantity: ['', Validators.required],
       'dosageInstruction.text': ['', Validators.required],
@@ -45,10 +66,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // This method will be triggered when you want to send the request to the FHIR API
   submitMedicationRequest(): void {
     if (this.firstFormGroup.valid && this.secondFormGroup.valid) {
-
       let medicationRequest = {
         resourceType: 'MedicationRequest',
         status: this.firstFormGroup.value.status,
@@ -59,7 +78,8 @@ export class HomeComponent implements OnInit {
         medication: {
           concept: {
             coding: [{
-              display: this.secondFormGroup.value['medication.concept.coding.display'],
+              display: this.getMedicationName(this.secondFormGroup.value['medication.concept.coding.display']),
+              code: this.secondFormGroup.value['medication.concept.coding.display'],
             }],
           },
         },
@@ -79,5 +99,11 @@ export class HomeComponent implements OnInit {
         console.error('Error submitting MedicationRequest:', error);
       });
     }
+  }
+
+  // Fonction pour obtenir le nom du médicament à partir du code
+  getMedicationName(code: string): string {
+    const med = this.allowedSnomedCodes.find(med => med.code === code);
+    return med ? med.nom : '';
   }
 }
