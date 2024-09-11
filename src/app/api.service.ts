@@ -40,6 +40,24 @@ export class ApiService {
     return this.http.get(this.fhirApiUrl+'/patient/'+id, { headers });
   }
 
+  getMedication(id:String): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+     
+    });
+
+    return this.http.get(this.fhirApiUrl+'/medication/'+id, { headers });
+  }
+ 
+  createClaim(claim: any): Observable<any> {
+    console.log(claim);
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post(this.fhirApiUrl+'/claim', claim, { headers });
+  }
 
 
 }

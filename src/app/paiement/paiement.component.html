@@ -1,1 +1,101 @@
-<p>paiement works!</p>
+<mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Formulaire de prescription</mat-card-title>
+    </mat-card-header>
+  
+    <mat-card-content>
+      <button mat-raised-button (click)="isEditable = !isEditable">
+        {{!isEditable ? 'Editer' : 'Fixe'}}
+      </button>
+  
+      <mat-stepper linear #stepper>
+        <!-- Step 1: Medecin -->
+        <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Information Médecin</ng-template>
+  
+            <mat-form-field>
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" placeholder="Select status" required>
+                <mat-option value="active">En cours</mat-option>
+                <mat-option value="cancelled">Terminé</mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field>
+              <mat-label>Type</mat-label>
+              <mat-select matInput formControlName="type" placeholder="Type" required>
+              <mat-option value="proposal">Category</mat-option>
+                <mat-option value="plan">Descipline</mat-option>
+            </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field>
+              <mat-label>Use</mat-label>
+              <mat-select formControlName="use" placeholder="Select claim" required>
+                <mat-option value="proposal">Claim</mat-option>
+                <mat-option value="plan">Preauthorization</mat-option>
+                <mat-option value="order">Predetermination</mat-option>
+              
+              </mat-select>
+            </mat-form-field>
+            
+            <div>
+              <button mat-button matStepperNext>Suivant</button>
+            </div>
+          </form>
+        </mat-step>
+  
+        <!-- Step 2: Prescription -->
+        <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Information Facture</ng-template>
+  
+            <mat-form-field>
+                <mat-label>Patient</mat-label>
+                <input matInput formControlName="reference" placeholder="Last name, First name" required>
+              </mat-form-field>
+            
+            
+              
+            
+            <mat-form-field>
+    <mat-label>Date de début de l'utilisation</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="created" placeholder="Entrez la date de début de l'utilisation" [min]="todayDate" required>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Prix</mat-label>
+    <input matInput formControlName="unitPrice" placeholder="Prix" required>
+  </mat-form-field>
+            
+  
+ 
+  
+ 
+            
+  
+            <div>
+              <button mat-button matStepperPrevious>Retour</button>
+              <button mat-button matStepperNext>Suivant</button>
+            </div>
+          </form>
+        </mat-step>
+  
+        <!-- Step 3: Done -->
+        <mat-step>
+          <ng-template matStepLabel>Terminé</ng-template>
+          <p class="success-message">
+           Vous avez maintenant terminé.
+          </p>
+          <div>
+            <button mat-button matStepperPrevious>Retour</button>
+            <button mat-button (click)="submitclaim()">Enregistrer</button>
+            <button mat-button (click)="stepper.reset()">Réinitialiser</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+  
