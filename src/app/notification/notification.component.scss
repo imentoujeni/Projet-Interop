@@ -1,0 +1,35 @@
+
+.status-completed {
+    background-color: #4CAF50; /* Vert doux */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Coins arrondis */
+    padding: 8px 16px;  /* Espacement interne */
+    font-size: 14px;  /* Taille du texte */
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transition douce */
+  }
+  
+  .status-completed:hover {
+    background-color: #45a049; /* Changement de couleur au survol */
+    transform: translateY(-2px); /* Effet d'élévation au survol */
+  }
+  
+  .status-stopped {
+    background-color: #F44336; /* Rouge doux */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .status-stopped:hover {
+    background-color: #e53935; /* Changement de couleur au survol */
+    transform: translateY(-2px); /* Effet d'élévation au survol */
+  }
+  

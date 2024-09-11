@@ -31,6 +31,14 @@ export class ApiService {
 
     return this.http.get(this.fhirApiUrl+'/Medication-administration', { headers });
   }
+  getPatient(id:String): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+     
+    });
+
+    return this.http.get(this.fhirApiUrl+'/patient/'+id, { headers });
+  }
 
 
 

@@ -1,50 +1,39 @@
 <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
-  
-      <!-- Position Column -->
+    <table mat-table [dataSource]="dataSource" class="mat-table">
       <ng-container matColumnDef="subject">
         <th mat-header-cell *matHeaderCellDef> Patient </th>
-        <td mat-cell *matCellDef="let element"> {{element.subject.reference}} </td>
+        <td mat-cell *matCellDef="let element"> {{ element.subject }} </td>
       </ng-container>
-  
-      <!-- Name Column -->
+      
       <ng-container matColumnDef="medication">
-        <th mat-header-cell *matHeaderCellDef> Médication</th>
-        <td mat-cell *matCellDef="let element"> {{element.medication.reference}} </td>
+        <th mat-header-cell *matHeaderCellDef> Médicament </th>
+        <td mat-cell *matCellDef="let element"> {{ element.medication }} </td>
       </ng-container>
- 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-      </ng-container>
-  
- 
-  
+      
       <ng-container matColumnDef="occurenceDateTime">
-        <th mat-header-cell *matHeaderCellDef> la Raison de status </th>
-        <td mat-cell *matCellDef="let element"> {{element.occurenceDateTime}} </td>
+        <th mat-header-cell *matHeaderCellDef> Date début Médicament </th>
+        <td mat-cell *matCellDef="let element"> {{ element.occurenceDateTime }} </td>
       </ng-container>
-
-        
-      <ng-container matColumnDef="isSubPotent">
-        <th mat-header-cell *matHeaderCellDef> la Raison de status </th>
-        <td mat-cell *matCellDef="let element"> {{element.isSubPotent}} </td>
+      
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status de prise de Médicament </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button
+            [ngClass]="{
+              'status-completed': element.status === 'completed',
+              'status-stopped': element.status === 'stopped'
+            }"
+            [disabled]="element.status !== 'stopped'"
+            (click)="onStatusButtonClick(element)">
+      {{ element.status }}
+    </button>
+        </td>
       </ng-container>
-
-      <ng-container matColumnDef="subPotentReason">
-        <th mat-header-cell *matHeaderCellDef>  </th>
-        <td mat-cell *matCellDef="let element"> {{element.subPotentReason}} </td>
-      </ng-container>
-
-    
-
+  
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                   showFirstLastButtons
-                   aria-label="Select page of periodic elements">
-    </mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
   
