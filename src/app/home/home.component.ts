@@ -44,7 +44,11 @@ export class HomeComponent implements OnInit {
     { code: '18381001', nom: "Pindolol" },
     { code: '19194001', nom: "Didanosine" }
   ];
-
+  // Liste des médecins
+  readonly allowedMedecins = [
+    { code: '66dffe7399cb8a001240f331', nom: "Manhattan maboul" }
+  ];
+  
   constructor(private _formBuilder: FormBuilder, private fhirService: ApiService) {}
 
   ngOnInit(): void {
@@ -52,6 +56,7 @@ export class HomeComponent implements OnInit {
     this.todayDate = today.toISOString().split('T')[0];
 
     this.firstFormGroup = this._formBuilder.group({
+      'requester.display': ['66dffe7399cb8a001240f331', Validators.required],
       status: ['', Validators.required],
       'subject.display': ['', Validators.required],
       intent: ['', Validators.required],
@@ -60,15 +65,20 @@ export class HomeComponent implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       'medication.concept.coding.display': ['', Validators.required], // Stocke le code SNOMED
       validityPeriod: ['', Validators.required],
+      authoredOn: ['', Validators.required],
       quantity: ['', Validators.required],
       'dosageInstruction.text': ['', Validators.required],
       'substitution.allowedBoolean': ['', Validators.required],
+     
     });
   }
 
   submitMedicationRequest(): void {
     if (this.firstFormGroup.valid && this.secondFormGroup.valid) {
       let medicationRequest = {
+        requester: {
+          display: this.firstFormGroup.value['requester.display'],
+        },
         resourceType: 'MedicationRequest',
         status: this.firstFormGroup.value.status,
         intent: this.firstFormGroup.value.intent,
@@ -90,9 +100,10 @@ export class HomeComponent implements OnInit {
         }],
         substitution: [{
           allowedBoolean: this.secondFormGroup.value['substitution.allowedBoolean'],
-        }]
+        }],
+        authoredOn: this.secondFormGroup.value.authoredOn,
       };
-
+    
       this.fhirService.createMedicationRequest(medicationRequest).subscribe(response => {
         console.log('MedicationRequest submitted successfully:', response);
       }, error => {

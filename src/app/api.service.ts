@@ -31,6 +31,7 @@ export class ApiService {
 
     return this.http.get(this.fhirApiUrl+'/Medication-administration', { headers });
   }
+
   getPatient(id:String): Observable<any> {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -48,7 +49,17 @@ export class ApiService {
 
     return this.http.get(this.fhirApiUrl+'/medication/'+id, { headers });
   }
- 
+  getNotice(): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+     
+    });
+
+    return this.http.get(this.fhirApiUrl+'/payment-notice', { headers });
+  }
+
+   
+  
   createClaim(claim: any): Observable<any> {
     console.log(claim);
 

@@ -15,6 +15,16 @@
           <ng-template matStepLabel>Information Médecin</ng-template>
 
           <mat-form-field>
+            <mat-label>Médecin</mat-label>
+            <mat-select formControlName="requester.display" required>
+              <mat-option *ngFor="let med of allowedMedecins" [value]="med.code">
+                {{ med.nom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+
+          <mat-form-field>
             <mat-label>Status</mat-label>
             <mat-select formControlName="status" placeholder="Select status" required>
               <mat-option value="in-progress">En cours</mat-option>
@@ -70,8 +80,15 @@
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
-          
-          
+<mat-form-field>
+  <mat-label>Date d'envoie de l'utilisation</mat-label>
+  <input matInput [matDatepicker]="picker" formControlName="authoredOn" placeholder="Entrez la date d'aujourd'hui" [value]="todayDate"  required>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+              
+
+
 
 <mat-form-field>
   <mat-label>Quantité</mat-label>
