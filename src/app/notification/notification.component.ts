@@ -44,16 +44,15 @@ export class NotificationComponent implements AfterViewInit, OnInit {
 
   onStatusButtonClick(element: any) {
     if (element.status === 'stopped') {
-      this.openDialog(element.isSubPotent);
+      this.openDialog(element);
     }
   }
 
-  openDialog(isSubPotent: boolean) {
+  openDialog(element: any) {
     this.dialog.open(DialogDataExampleDialog, {
-      data: { isSubPotent }
+      data: { element }
     });
   }
-
 
   ngOnInit(): void {
     console.log('Component initialized, calling getMedicationRequests()');
@@ -68,7 +67,7 @@ export class NotificationComponent implements AfterViewInit, OnInit {
   getMedicationRequests(): void {
     this.fhirService.getMedicationadministration().subscribe(
       (data: any) => {
-        console.log(typeof data[0])
+        console.log(data)
         // this.dataSource.data = data;
         for (let i = 0; i < data.length; i++) {
           let idPatient = data[i].subject.reference.substring(8, data[i].subject.reference.length);
@@ -81,8 +80,10 @@ export class NotificationComponent implements AfterViewInit, OnInit {
 
               this.dataSource.data = this.patients;
               let medication = "-";
-              
-              this.fhirService.getMedication(idMedication).subscribe(
+              if (data[i].subPotentReason && data[i].subPotentReason.length > 0) {
+                console.log("subPotentReason:", data[i].subPotentReason[0].text);
+              }
+                            this.fhirService.getMedication(idMedication).subscribe(
                 (data2: any) => {
                   console.log(data2);
                   medication = data2.code.text;
@@ -90,7 +91,9 @@ export class NotificationComponent implements AfterViewInit, OnInit {
                     "subject": data1.name[0].family + " " + data1.name[0].given,
                     "medication":medication,
                     "occurenceDateTime": data[i].occurenceDateTime,
-                    "status": data[i].status
+                    "status": data[i].status,
+                    "subPotentReason": data[i].subPotentReason?.[0]?.text 
+
                   })
                 });
             }
